@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  discord-monitor:
+    build: .
+    container_name: monitor
+    restart: unless-stopped
+    volumes:
+      - ./config.json:/app/config.json:ro
+      - ./monitor_data.json:/app/monitor_data.json
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # For Docker monitoring
+    environment:
+      - TZ=Asia/Jakarta
+    # Uncomment jika perlu akses ke host system
+    privileged: true
+    network_mode: host
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
